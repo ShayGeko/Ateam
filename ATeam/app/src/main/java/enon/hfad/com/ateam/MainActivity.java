@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static enon.hfad.com.ateam.R.id.player_score;
 
 public class MainActivity extends AppCompatActivity {
     private TextView text_money;
@@ -18,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     // нужно для сохранения денег, забейте
 
     public static int money = 0;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +36,11 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.drawable.background_main);
         // установка фона (красивая картинка из инета)
 
-        text_money = (TextView) findViewById(R.id.player_score);
+        text_money = (TextView) findViewById(player_score);
+
+
     }
 
-    // @Override
-    // protected void onNewIntent(Bundle savedInstanceState) {
-    // }
 
     @Override
     protected void onPause() {
@@ -56,15 +61,18 @@ public class MainActivity extends AppCompatActivity {
           // получаем число из сохранёнки
           money = my_activity.getInt(GET_PLAYER_SCORE, 0);
             // выводим
-//          text_money.setText(Integer.toString(money));
+          text_money.setText(Integer.toString(money));
       }
   }
 
 
 
     public void goToShop(View view) {
-        Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
-        startActivity(goToShopIntent);
+        //Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
+        //startActivity(goToShopIntent);
+        final Toast check_it_later = Toast.makeText(getApplicationContext(),
+                "Please check it later", Toast.LENGTH_SHORT);
+        check_it_later.show();
     }
     public void goToSettings(View view) {
         Intent goToSettingsIntent = new Intent(MainActivity.this, settings.class);
@@ -74,5 +82,9 @@ public class MainActivity extends AppCompatActivity {
         Intent play_intent = new Intent(this, game.class);
         play_intent.putExtra("money", Integer.toString(money));
         startActivity(play_intent);
+    }
+    public void money_plus(View view) {
+        text_money.setText(Integer.toString(money));
+        money++;
     }
 }
