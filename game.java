@@ -31,6 +31,10 @@ import static enon.hfad.com.ateam.MainActivity.money;
 
 
 public class game extends AppCompatActivity {
+    double current_x = 0;
+    double current_y = 0;
+    double speed_x = 0.91/5000;
+    double speed_y = 0.1/5000;
     int red = 160;
     int green = 219;
     int blue = 239;
@@ -127,7 +131,7 @@ public class game extends AppCompatActivity {
         field = width;
         high = height/10*9;
         speed=Math.round(field/5);
-        
+
 
         apartment_ocupants = new int[walls.length+1];
         // массив типа [4,1] - 4 гнома в первой квартире и 1 во второй
@@ -170,9 +174,8 @@ public class game extends AppCompatActivity {
                         red+=(239-160)*step/5000;
                         green-=(219-0)*step/5000;
                         blue-=(239-0)*step/5000;
-                        pos = speed * m_seconds / 1000;//true_speed*m_seconds/1000;
-                        TextView pos_text = (TextView)findViewById(R.id.textview_pos);
-                        pos_text.setText(Integer.toString(pos));
+                        current_x += speed_x*step/5000;
+                        current_y -= speed_y *step/5000;
                         m_seconds += step;
                         current_time += step;
                         if(pos == field || dropped_dwarfs == free_dwarfs){
@@ -235,7 +238,7 @@ public class game extends AppCompatActivity {
                             final ImageView dwarf3 = (ImageView) findViewById(R.id.dwarf_image3);
                             final ImageView dwarf4 = (ImageView) findViewById(R.id.dwarf_image4);
                             final ImageView dwarf5 = (ImageView) findViewById(R.id.dwarf_image5);
-                            TranslateAnimation dwarf_vertical = new TranslateAnimation(pos + 50, pos + 120, 40, 250);
+                            TranslateAnimation dwarf_vertical = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,(float)current_x,Animation.RELATIVE_TO_PARENT, (float)current_x,Animation.RELATIVE_TO_PARENT, (float)current_y,Animation.RELATIVE_TO_PARENT, 0.65f);
                             dwarf_vertical.setDuration((int) Math.round(time * 1000));
                             dwarf_vertical.setFillAfter(true);
                             if (dropped_dwarfs == 0) {
