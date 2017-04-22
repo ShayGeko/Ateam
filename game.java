@@ -12,7 +12,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -174,8 +183,8 @@ public class game extends AppCompatActivity {
                         red+=(239-160)*step/5000;
                         green-=(219-0)*step/5000;
                         blue-=(239-0)*step/5000;
-                        current_x += speed_x*step/5000;
-                        current_y -= speed_y *step/5000;
+                        current_x = speed_x*m_seconds;
+                        current_y = speed_y*m_seconds;
                         m_seconds += step;
                         current_time += step;
                         if(pos == field || dropped_dwarfs == free_dwarfs){
@@ -204,13 +213,13 @@ public class game extends AppCompatActivity {
                     if (!game_was_started) {
                         game_layout.setBackgroundResource(R.drawable.background_game2);
                         //TODO создать обратный отсчет 3...2...1.... Игра началась!
-                        //TODO почему не работают Toast?
                         final ImageView plane = (ImageView) findViewById(R.id.plane);
                         //plane.setImageResource(R.drawable.battery1);
                         //TranslateAnimation plane_animation = new TranslateAnimation(0, field, high, high);
                         TranslateAnimation plane_animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -0.13f, Animation.RELATIVE_TO_PARENT,0.78f, Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_PARENT, 0.1f);
                         plane_animation.setDuration(5000);
-                        plane_animation.setFillAfter(true);
+                        plane_animation.setFillAfter(false);
+                        plane_animation.setInterpolator(new LinearInterpolator());
                         plane.startAnimation(plane_animation);
 
                         mAnimationDrawable = new AnimationDrawable();
