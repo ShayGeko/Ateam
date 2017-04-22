@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
           // получаем число из сохранёнки
           money = my_activity.getInt(GET_PLAYER_SCORE, 0);
             // выводим
-          text_money.setText(Integer.toString(money));
+          //text_money.setText(Integer.toString(money));
       }
   }
 
