@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,8 +37,21 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.drawable.background_main);
         // установка фона (красивая картинка из инета)
 
-        text_money = (TextView) findViewById(player_score);
+        text_money = (TextView) findViewById(R.id.player_score);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
 
+            money = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            if(text_money == null){
+                text_money = (TextView) findViewById(R.id.player_score);
+            }
+            try {
+                text_money.setText(Integer.toString(money));
+            } catch (Exception e){
+                Log.v("olo", "Money == null" + e);
+            }
+        }
 
     }
 
@@ -51,18 +65,34 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences.Editor editor = my_activity.edit();
+        editor.putInt(GET_PLAYER_SCORE, money);
+        editor.apply();
+        money = data.getIntExtra("money", 0);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
 
+            money = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            if(text_money == null){
+                text_money = (TextView) findViewById(R.id.player_score);
+            }
+            try {
+                text_money.setText(Integer.toString(money));
+            } catch (Exception e){
+                Log.v("olo", "Money == null" + e);
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
        super.onResume();
 
-      if (my_activity.contains(GET_PLAYER_SCORE)) {
-          // получаем число из сохранёнки
-          money = my_activity.getInt(GET_PLAYER_SCORE, 0);
-            // выводим
-          text_money.setText(Integer.toString(money));
-      }
+
   }
 
 
@@ -78,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     public void play(View view) {
         Intent play_intent = new Intent(this, game.class);
         play_intent.putExtra("money", Integer.toString(money));
-        startActivity(play_intent);
+        startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
         text_money.setText(Integer.toString(money));

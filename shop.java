@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import static enon.hfad.com.ateam.MainActivity.money;
+//import static enon.hfad.com.ateam.MainActivity.money;
 
 /**
  * Created by HOME on 06.03.2017.
