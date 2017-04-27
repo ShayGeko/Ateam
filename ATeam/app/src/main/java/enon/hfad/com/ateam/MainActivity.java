@@ -61,18 +61,15 @@ public class MainActivity extends AppCompatActivity {
           // получаем число из сохранёнки
           money = my_activity.getInt(GET_PLAYER_SCORE, 0);
             // выводим
-          //text_money.setText(Integer.toString(money));
+          text_money.setText(Integer.toString(money));
       }
   }
 
 
 
     public void goToShop(View view) {
-        //Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
-        //startActivity(goToShopIntent);
-        final Toast check_it_later = Toast.makeText(getApplicationContext(),
-                "Please check it later", Toast.LENGTH_SHORT);
-        check_it_later.show();
+        Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
+        startActivity(goToShopIntent);
     }
     public void goToSettings(View view) {
         Intent goToSettingsIntent = new Intent(MainActivity.this, settings.class);

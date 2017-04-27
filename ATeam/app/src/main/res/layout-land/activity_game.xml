@@ -145,4 +145,24 @@
         android:layout_marginTop="29dp"
         android:id="@+id/textview_pos" />
 
+    <ImageButton
+        app:srcCompat="@drawable/pause_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/pause_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="pause_clicked" />
+
+    <ImageButton
+        app:srcCompat="@drawable/play_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/play_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:onClick="play_clicked" />
+
 </RelativeLayout>

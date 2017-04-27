@@ -1,6 +1,5 @@
 package enon.hfad.com.ateam;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
@@ -14,17 +13,13 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static enon.hfad.com.ateam.MainActivity.money;
 
 /**
@@ -33,6 +28,36 @@ import static enon.hfad.com.ateam.MainActivity.money;
 
 
 public class game extends AppCompatActivity {
+    boolean game_was_paused = false;
+
+    public void pause_clicked(View view) {
+        ImageView plane = (ImageView)findViewById(R.id.plane);
+        game_was_paused = true;
+        ImageButton pause_button = (ImageButton) findViewById(R.id.pause_button);
+        ImageButton play_button = (ImageButton) findViewById(R.id.play_button);
+        play_button.setVisibility(View.VISIBLE);
+        pause_button.setVisibility(View.INVISIBLE);
+        plane.getLocationInWindow(pause_coordinates);
+        //plane.setVisibility(View.INVISIBLE);
+        plane.animate().x(pause_coordinates[0]).y(pause_coordinates[1]).setDuration(1);
+    }
+
+    public void play_clicked(View view) {
+        game_was_paused = false;
+        ImageView plane = (ImageView)findViewById(R.id.plane);
+        ImageButton pause_button = (ImageButton) findViewById(R.id.pause_button);
+        ImageButton play_button = (ImageButton) findViewById(R.id.play_button);
+        play_button.setVisibility(View.INVISIBLE);
+        pause_button.setVisibility(View.VISIBLE);
+        plane.setVisibility(View.VISIBLE);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        final int width = display.getWidth();
+        final int height = display.getHeight();
+        plane.animate().xBy(width - 200 - pause_coordinates[0]).yBy(height / 4  - pause_coordinates[1]).setDuration(5000-((level-1)*250) - pause_coordinates[0]/(width-200));
+    }
+
     double current_x = 0;
     double current_y = 0;
     double speed_x = 0.91 / 5000;
@@ -41,14 +66,19 @@ public class game extends AppCompatActivity {
     int green = 219;
     int blue = 239;
 
+    int[] pause_coordinates = new int[2];
+
+    byte level = 1;
+
     int money_for_one_apartment = 2;
     int money_for_one_dwarf = 1;
     int m_seconds = 0;
-    boolean dwarf_was_dropped = false;
     int true_speed;
     String current_apartment;
     boolean game_was_played = false;
     boolean game_was_started = false;
+    boolean first_clicked = false;
+
 
     int wait_time = 100;
     // время после кидка одного до возможного кидка следующего (в мс)
@@ -119,6 +149,7 @@ public class game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_game);
+
         final RelativeLayout game_layout = (RelativeLayout) findViewById(R.id.activity_game);
         //game_layout.setBackgroundResource(R.drawable.background_game2);
         game_layout.setBackgroundResource(R.drawable.ready_image);
@@ -170,23 +201,28 @@ public class game extends AppCompatActivity {
         //TODO решить ошибку с строке 108 (java.lang.nullpointerexception)
         //TODO реализовать сохранение денег, нарисовать стены
 
+
+
         handler1.post(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void run() {
                 if (dropped_dwarfs < 5) {
-                    if (game_was_started && !game_was_played) {
-                        game_layout.setBackgroundColor(Color.rgb(red, green, blue));
-                        red += (239 - 160) * step / 5000;
-                        green -= (219 - 0) * step / 5000;
-                        blue -= (239 - 0) * step / 5000;
-                        current_x += speed_x * step;
-                        current_y += speed_y * step;
+                    if (game_was_started && !game_was_played && !game_was_paused) {
+                        final ImageView plane = (ImageView) findViewById(R.id.plane);
+                        //game_layout.setBackgroundColor(Color.rgb(red, green, blue));
+                        //red += (239 - 160) * step / 5000;
+                        //green -= (219 - 0) * step / 5000;
+                        //blue -= (239 - 0) * step / 5000;
+                        current_x = speed_x * m_seconds;
+                        current_y = speed_y * m_seconds;
                         m_seconds += step;
                         current_time += step;
-                        if (current_x >= 0.9 || dropped_dwarfs == 4) {
+                        int current[] = new int[2];
+                        plane.getLocationInWindow(current);
+                        if (current[1] >= field/4 ){//|| dropped_dwarfs == 5) {
                             game_was_played = true;
                             game_layout.setBackgroundColor(Color.rgb(10, 0, 0));
-                            final ImageView plane = (ImageView) findViewById(R.id.plane);
                             plane.setVisibility(View.INVISIBLE);
 
                             Toast toast = Toast.makeText(getApplicationContext(),
@@ -194,7 +230,32 @@ public class game extends AppCompatActivity {
                             toast.show();
                         }
                         ;
-                    }
+                    } else {
+                        if(first_clicked){
+                        first_time += step;
+                        if (first_time == 3000){
+                            final ImageView plane = (ImageView) findViewById(R.id.plane);
+                            game_was_started = true;
+
+                            //plane.setImageResource(R.drawable.battery1);
+                            plane.setVisibility(View.VISIBLE);
+                            plane.animate().xBy(width - 200).yBy(height / 4).setDuration(5000-((level-1)*250));
+                            mAnimationDrawable = new AnimationDrawable();
+
+                            mAnimationDrawable.setOneShot(false);
+                            mAnimationDrawable.addFrame(frame1, DURATION);
+                            mAnimationDrawable.addFrame(frame2, DURATION);
+                            mAnimationDrawable.addFrame(frame3, DURATION);
+                            mAnimationDrawable.addFrame(frame4, DURATION);
+
+                            plane.setBackground(mAnimationDrawable);
+
+                            mAnimationDrawable.setVisible(true, true);
+                            mAnimationDrawable.start();
+
+
+                        }
+                    }}
                     System.out.println("handler " + current_x);
                     handler1.postDelayed(this, step);
                 }
@@ -215,36 +276,15 @@ public class game extends AppCompatActivity {
                                                if ((dropped_dwarfs < free_dwarfs)) {
 
                                                    if (!game_was_started) {
+                                                       first_clicked = true;
                                                        game_layout.setBackgroundResource(R.drawable.background_game2);
-                                                       //TODO создать обратный отсчет 3...2...1.... Игра началась!
-                                                       //TODO почему не работают Toast?
-
-                                                       //plane.setImageResource(R.drawable.battery1);
-                                                       plane.setVisibility(View.VISIBLE);
-                                                       plane.animate().xBy(width - 200).yBy(height / 4).setDuration(5000);
-                                                       mAnimationDrawable = new AnimationDrawable();
-
-                                                       mAnimationDrawable.setOneShot(false);
-                                                       mAnimationDrawable.addFrame(frame1, DURATION);
-                                                       mAnimationDrawable.addFrame(frame2, DURATION);
-                                                       mAnimationDrawable.addFrame(frame3, DURATION);
-                                                       mAnimationDrawable.addFrame(frame4, DURATION);
-
-                                                       plane.setBackground(mAnimationDrawable);
-
-                                                       mAnimationDrawable.setVisible(true, true);
-                                                       mAnimationDrawable.start();
-
-
-                                                       game_was_started = true;
                                                    } else {
-                                                       if (current_time > wait_time || dropped_dwarfs == 0) {
+                                                       if ((current_time > wait_time || dropped_dwarfs == 0) && !game_was_paused) {
                                                            final ImageView dwarf1 = (ImageView) findViewById(R.id.dwarf_image1);
                                                            final ImageView dwarf2 = (ImageView) findViewById(R.id.dwarf_image2);
                                                            final ImageView dwarf3 = (ImageView) findViewById(R.id.dwarf_image3);
                                                            final ImageView dwarf4 = (ImageView) findViewById(R.id.dwarf_image4);
                                                            final ImageView dwarf5 = (ImageView) findViewById(R.id.dwarf_image5);
-                                                           final ImageView plane = (ImageView) findViewById(R.id.plane);
                                                            TranslateAnimation dwarf_vertical = new TranslateAnimation(location[0], location[0], location[1], (int) (height * 0.8));
                                                            dwarf_vertical.setDuration((int) Math.round(time * 1000));
                                                            dwarf_vertical.setFillAfter(true);
@@ -277,9 +317,29 @@ public class game extends AppCompatActivity {
                                                                //plane.setImageResource(R.drawable.battery6);
                                                            }
 
-
                                                            dropped_dwarfs++;
                                                            current_time = 0;
+
+                                                           //TODO продолжение игры (проблема с повторной анимацией самолета)
+                                                           if (dropped_dwarfs == 5) {
+                                                               level++;
+                                                               dropped_dwarfs = 0;
+                                                              // red = 160;
+                                                              // green = 219;
+                                                              // blue = 239;
+                                                               current_x = 0;
+                                                               current_y = 0;
+                                                               m_seconds = 0;
+                                                               current_time = 0;
+                                                               dwarf1.setVisibility(View.INVISIBLE);
+                                                               dwarf2.setVisibility(View.INVISIBLE);
+                                                               dwarf3.setVisibility(View.INVISIBLE);
+                                                               dwarf4.setVisibility(View.INVISIBLE);
+                                                               dwarf5.setVisibility(View.INVISIBLE);
+                                                               plane.animate().xBy(width - 200).yBy(height / 4).setDuration(5000-((level-1)*250));
+
+
+                                                           }
 
 
                                                            for (byte i = 0; i < walls.length; i++) { // изменение apartment_ocupants
