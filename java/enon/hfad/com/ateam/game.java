@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.TimeUnit;
+
 import static enon.hfad.com.ateam.MainActivity.money;
 
 /**
@@ -246,7 +248,7 @@ public class game extends AppCompatActivity {
                             first_time += step;
                             if (first_time == 3000){
                                 final ImageView plane = (ImageView) findViewById(R.id.plane);
-                                //game_was_started = true;
+                                game_was_started = true;
 
                                 //plane.setImageResource(R.drawable.battery1);
                                 plane.setVisibility(View.VISIBLE);
@@ -291,7 +293,7 @@ public class game extends AppCompatActivity {
                                                        first_clicked = true;
                                                        game_layout.setBackgroundResource(R.drawable.background_game2);
                                                    } else {
-                                                       if ((current_time > wait_time || dropped_dwarfs == 0) && !game_was_paused) {
+                                                       if ((current_time > wait_time) && !game_was_paused && !game_was_played) {
                                                            final ImageView dwarf1 = (ImageView) findViewById(R.id.dwarf_image1);
                                                            final ImageView dwarf2 = (ImageView) findViewById(R.id.dwarf_image2);
                                                            final ImageView dwarf3 = (ImageView) findViewById(R.id.dwarf_image3);
@@ -351,8 +353,8 @@ public class game extends AppCompatActivity {
                                                                // red = 160;
                                                                // green = 219;
                                                                // blue = 239;
-                                                               current_x = 0;
-                                                               current_y = 0;
+                                                               plane.animate().x(0).y(0).setDuration(0);
+
                                                                m_seconds = 0;
                                                                current_time = 0;
                                                                dwarf1.setVisibility(View.INVISIBLE);
@@ -360,7 +362,7 @@ public class game extends AppCompatActivity {
                                                                dwarf3.setVisibility(View.INVISIBLE);
                                                                dwarf4.setVisibility(View.INVISIBLE);
                                                                dwarf5.setVisibility(View.INVISIBLE);
-                                                               plane.animate().xBy(width - 200).yBy(height / 4).setDuration(5000-((level-1)*250));
+                                                              //plane.animate().xBy(width - 200).yBy(height / 4).setDuration(5000-((level-1)*250));
 
 
                                                            }

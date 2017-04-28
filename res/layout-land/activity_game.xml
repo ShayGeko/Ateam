@@ -165,4 +165,13 @@
         android:visibility="invisible"
         android:onClick="play_clicked" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/next_level_button"
+        android:id="@+id/imageButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="INVISIBLE" />
+
 </RelativeLayout>
