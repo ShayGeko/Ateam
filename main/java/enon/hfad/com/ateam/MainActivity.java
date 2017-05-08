@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import static enon.hfad.com.ateam.R.id.player_score;
 
+
 public class MainActivity extends AppCompatActivity {
     private TextView text_money;
 
@@ -108,10 +109,12 @@ public class MainActivity extends AppCompatActivity {
     public void play(View view) {
         Intent play_intent = new Intent(this, game.class);
         play_intent.putExtra("money", Integer.toString(money));
+        //play_intent.putExtra("chosen", chosen);
         startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
-        text_money.setText(Integer.toString(money));
         money++;
+        text_money.setText(Integer.toString(money));
+
     }
 }

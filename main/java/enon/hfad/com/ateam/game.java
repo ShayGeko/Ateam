@@ -58,7 +58,7 @@ public class game extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        final int width = display.getWidth();
+        final  int width = display.getWidth();
         final int height = display.getHeight();
         plane.animate().xBy(width - 50 - pause_coordinates[0]).yBy(height / 4  - pause_coordinates[1]).setDuration(first_stage_time - ((level-1)*250) - pause_time/1000);
     }
@@ -401,8 +401,7 @@ public class game extends AppCompatActivity {
                                                    } else {
                                                        if ((current_time >= wait_time) && !game_was_paused ) {
                                                            first_clicked = false;
-
-                                                           TranslateAnimation dwarf_vertical = new TranslateAnimation(location[0],(float) (location[0] + field/(21-level)), location[1], (int) (height * 0.7));
+                                                           TranslateAnimation dwarf_vertical = new TranslateAnimation(location[0],(float) (location[0]), location[1], (int) (height * 0.7));
                                                            dwarf_vertical.setDuration((int) Math.round(time));
                                                            dwarf_vertical.setFillAfter(true);
 
