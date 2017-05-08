@@ -22,7 +22,7 @@ import org.w3c.dom.Text;
 
 import static enon.hfad.com.ateam.MainActivity.money;
 
-//import static enon.hfad.com.ateam.MainActivity.money;
+import static enon.hfad.com.ateam.MainActivity.chosen;
 
 /**
  * Created by HOME on 06.03.2017.
@@ -30,10 +30,11 @@ import static enon.hfad.com.ateam.MainActivity.money;
 
 public class shop extends AppCompatActivity {
     public static boolean purchased[]= new boolean[5];
-    public int chosen = 1;
     ImageButton[] cell = new ImageButton[5];
     ImageView temporary;
     TextView money_text;
+    TextView choise;
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -48,6 +49,8 @@ public class shop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         Display display = getWindowManager().getDefaultDisplay();
+        Intent getData = getIntent();
+        int chosen = getData.getIntExtra("chosen", 1);
         Point size = new Point();
         display.getSize(size);
         final int width = display.getWidth();
@@ -57,7 +60,7 @@ public class shop extends AppCompatActivity {
         cell[2] = (ImageButton) findViewById(R.id.imageButton3);
         cell[3] = (ImageButton) findViewById(R.id.imageButton4);
         cell[4] = (ImageButton) findViewById(R.id.imageButton5);
-
+        choise = (TextView) findViewById(R.id.choice);
 
         //отступы
         ViewGroup.MarginLayoutParams marginParams = new ViewGroup.MarginLayoutParams(cell[0].getLayoutParams());
@@ -66,24 +69,28 @@ public class shop extends AppCompatActivity {
         for(int i = 0; i < 5; i++){
             cell[i].setLayoutParams(layoutParams);
             cell[i].setPadding(10,5,10,5);
-            if(i == chosen)cell[i].setBackgroundColor(Color.GREEN);
+            if(i == chosen - 1)cell[i].setBackgroundColor(Color.GREEN);
             else if(purchased[i])cell[i].setBackgroundColor(Color.YELLOW);
         }
-
+        choise.setText(Integer.toString(chosen));
         money_text = (TextView) findViewById(R.id.coins);
         money_text.setText(Integer.toString(money));
+        purchased[0] = true;
     }
     void onCellClick(View v){
         for(int i =0; i < 5; i++) {
-            if (v == cell[i]) {
-                if (chosen!= i + 1 && purchased[i]) {
+            if (v == cell[i] && (chosen!= i + 1)) {
+                if (purchased[i]) {
                     cell[chosen - 1].setBackgroundColor(Color.YELLOW);
-                    chosen = i;
+                    chosen = i + 1;
+                    choise.setText(Integer.toString(chosen));
                     cell[i].setBackgroundColor(Color.GREEN);
                     Toast toast = Toast.makeText(getApplicationContext(), "Skin was chosen", Toast.LENGTH_SHORT);
                     toast.show();
                 } else if (money >= 5) {
                     money -= 5;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Purchase successful", Toast.LENGTH_SHORT);
+                    toast.show();
                     purchased[i] = true;
                     money_text.setText(Integer.toString(money));
                     cell[i].setBackgroundColor(Color.YELLOW);

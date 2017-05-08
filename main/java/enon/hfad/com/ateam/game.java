@@ -34,7 +34,7 @@ import static enon.hfad.com.ateam.MainActivity.money;
 
 public class game extends AppCompatActivity {
     boolean game_was_paused = false;
-
+    final ImageView[] dwarf = new ImageView[5];
     public void pause_clicked(View view) {
         ImageView plane = (ImageView)findViewById(R.id.plane);
         game_was_paused = true;
@@ -64,12 +64,9 @@ public class game extends AppCompatActivity {
     }
 
     public void next_level_clicked(View view){
-        final ImageView dwarf1 = (ImageView) findViewById(R.id.dwarf_image1);
-        final ImageView dwarf2 = (ImageView) findViewById(R.id.dwarf_image2);
-        final ImageView dwarf3 = (ImageView) findViewById(R.id.dwarf_image3);
-        final ImageView dwarf4 = (ImageView) findViewById(R.id.dwarf_image4);
-        final ImageView dwarf5 = (ImageView) findViewById(R.id.dwarf_image5);
+        for(int i = 0; i < 5; i++)dwarf[i].setVisibility(View.GONE);
         ImageView plane = (ImageView)findViewById(R.id.plane);
+        if((level + 1)* 250 < first_stage_time )
         level++;
         dropped_dwarfs = 0;
         //dwarf1.setVisibility(View.INVISIBLE);
@@ -161,7 +158,7 @@ public class game extends AppCompatActivity {
 
     private AnimationDrawable mAnimationDrawable = null;
     private final static int DURATION = 250;
-
+    int chosen;
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -205,14 +202,52 @@ public class game extends AppCompatActivity {
         high = height / 10 * 9;
         //speed = Math.round(field / 5);
 
+        Intent getData = getIntent();
+        chosen = getData.getIntExtra("chosen", 1);
+        View v = new ImageView(getBaseContext());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(40, 40);
 
-        final ImageView dwarf1 = (ImageView) findViewById(R.id.dwarf_image1);
-        final ImageView dwarf2 = (ImageView) findViewById(R.id.dwarf_image2);
-        final ImageView dwarf3 = (ImageView) findViewById(R.id.dwarf_image3);
-        final ImageView dwarf4 = (ImageView) findViewById(R.id.dwarf_image4);
-        final ImageView dwarf5 = (ImageView) findViewById(R.id.dwarf_image5);
 
-        final ImageView field1 = (ImageView)findViewById(R.id.imageView1);
+        switch (chosen) {
+            case 1:
+                for(int i = 0; i < 5; i++) {
+                    dwarf[i] = new ImageView(this);
+                    dwarf[i].setImageResource(R.drawable.dwarf1);
+                    game_layout.addView(dwarf[i],0, params);
+                    dwarf[i].setVisibility(View.GONE);
+                }
+                break;
+            case 2: for(int i = 0; i < 5; i++) {
+                dwarf[i] = new ImageView(this);
+                dwarf[i].setImageResource(R.drawable.dwarf2);
+                game_layout.addView(dwarf[i],0, params);
+                dwarf[i].setVisibility(View.GONE);
+            }
+                break;
+            case 3: for(int i = 0; i < 5; i++) {
+                dwarf[i] = new ImageView(this);
+                dwarf[i].setImageResource(R.drawable.dwarf3);
+                game_layout.addView(dwarf[i],0, params);
+                dwarf[i].setVisibility(View.GONE);
+            }
+                break;
+            case 4: for(int i = 0; i < 5; i++) {
+                dwarf[i] = new ImageView(this);
+                dwarf[i].setImageResource(R.drawable.dwarf4);
+                game_layout.addView(dwarf[i],0, params);
+                dwarf[i].setVisibility(View.GONE);
+            }
+                break;
+            case 5: for(int i = 0; i < 5; i++) {
+                dwarf[i] = new ImageView(this);
+                dwarf[i].setImageResource(R.drawable.dwarf5);
+                game_layout.addView(dwarf[i],0, params);
+                dwarf[i].setVisibility(View.GONE);
+            }
+                break;
+        }
+
+       /* final ImageView field1 = (ImageView)findViewById(R.id.imageView1);
         final ImageView field2 = (ImageView)findViewById(R.id.imageView2);
         final ImageView field3 = (ImageView)findViewById(R.id.imageView3);
         final ImageView field4 = (ImageView)findViewById(R.id.imageView4);
@@ -263,7 +298,7 @@ public class game extends AppCompatActivity {
         field9.getLayoutParams().width = field/12;
         field10.getLayoutParams().width = field/12;
         field11.getLayoutParams().width = field/12;
-        field12.getLayoutParams().width = field/12;
+        field12.getLayoutParams().width = field/12;*/
 
 
 
@@ -406,41 +441,10 @@ public class game extends AppCompatActivity {
                                                            dwarf_vertical.setFillAfter(true);
 
                                                            //System.out.println(current_x);
-
-                                                           if (dropped_dwarfs == 0) {
-                                                               dwarf1.setVisibility(View.VISIBLE);
-                                                               dwarf1.startAnimation(dwarf_vertical);
-                                                               //plane.setImageResource(R.drawable.battery2);
-                                                           }
-                                                           if (dropped_dwarfs == 1) {
-                                                               dwarf2.setVisibility(View.VISIBLE);
-                                                               dwarf2.startAnimation(dwarf_vertical);
-                                                               //plane.setImageResource(R.drawable.battery3);
-                                                           }
-                                                           if (dropped_dwarfs == 2) {
-                                                               dwarf3.setVisibility(View.VISIBLE);
-                                                               dwarf3.startAnimation(dwarf_vertical);
-                                                               //plane.setImageResource(R.drawable.battery4);
-                                                           }
-                                                           if (dropped_dwarfs == 3) {
-                                                               dwarf4.setVisibility(View.VISIBLE);
-                                                               dwarf4.startAnimation(dwarf_vertical);
-                                                               //plane.setImageResource(R.drawable.battery5);
-                                                           }
+                                                           dwarf[dropped_dwarfs].setVisibility(View.VISIBLE);
+                                                           dwarf[dropped_dwarfs].startAnimation(dwarf_vertical);
                                                            if (dropped_dwarfs == 4) {
-                                                               dwarf5.setVisibility(View.VISIBLE);
-                                                               dwarf5.startAnimation(dwarf_vertical);
-                                                               //plane.setImageResource(R.drawable.battery6);
-                                                               //for (byte i = 0; i < apartment_ocupants.length; i++) { // деньги за уровень (выдаём за заполненные квартиры и за гномов, которые живут по одному (типа счастливые))
-                                                               //    if (apartment_ocupants[i] != 0) {
-                                                               //        money += money_for_one_apartment;
-                                                               //    }
-                                                               //    if (apartment_ocupants[i] == 1) {
-                                                               //        money += money_for_one_dwarf;
-                                                               //    }
-                                                              // }
                                                                money += 5;
-
                                                                plane.animate().x(0).y(0).setDuration(0);
                                                                ImageButton next_level_button = (ImageButton)findViewById(R.id.level_button);
                                                                next_level_button.setVisibility(View.VISIBLE);

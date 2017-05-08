@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     // нужно для сохранения денег, забейте
 
     public static int money = 0;
+    public static int chosen = 1;
 
 
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GET_PLAYER_SCORE, money);
         editor.apply();
         money = data.getIntExtra("money", 0);
+        chosen = data.getIntExtra("chosen", 1);
         if (my_activity.contains(GET_PLAYER_SCORE)) {
             // получаем число из сохранёнки
 
@@ -100,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToShop(View view) {
         Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
-        startActivity(goToShopIntent);
+        goToShopIntent.putExtra("chosen", chosen);
+        startActivityForResult(goToShopIntent, 2);
     }
     public void goToSettings(View view) {
         Intent goToSettingsIntent = new Intent(MainActivity.this, settings.class);
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public void play(View view) {
         Intent play_intent = new Intent(this, game.class);
         play_intent.putExtra("money", Integer.toString(money));
-        //play_intent.putExtra("chosen", chosen);
+        play_intent.putExtra("chosen", chosen);
         startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
