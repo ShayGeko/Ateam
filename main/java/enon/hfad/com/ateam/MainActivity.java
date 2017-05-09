@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import static enon.hfad.com.ateam.R.id.player_score;
 
-
 public class MainActivity extends AppCompatActivity {
     private TextView text_money;
 
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static int money = 0;
     public static int chosen = 1;
-
 
 
 
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GET_PLAYER_SCORE, money);
         editor.apply();
         money = data.getIntExtra("money", 0);
-        chosen = data.getIntExtra("chosen", 1);
         if (my_activity.contains(GET_PLAYER_SCORE)) {
             // получаем число из сохранёнки
 
@@ -116,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
-        money++;
         text_money.setText(Integer.toString(money));
-
+        money++;
     }
 }

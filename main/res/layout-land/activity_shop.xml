@@ -1,100 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/button_layout">
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/small_coin"
-        android:id="@+id/imageView14"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="14dp" />
+<HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_shop"
+    android:scrollbars="none">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
-        android:text="12345"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:id="@+id/coins"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textSize="18sp"
-        android:textAlignment="textEnd"
-        android:layout_gravity = "end"
-        android:layout_alignBottom="@+id/imageView14"
-        android:layout_toLeftOf="@+id/imageView14"
-        android:layout_toStartOf="@+id/imageView14"
-        android:layout_marginRight="11dp"
-        android:layout_marginEnd="11dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/imageView14"
+        android:id="@+id/t_shirts"
+        android:text="t_shirts"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <TextView
+        android:text="heads"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp"
-        android:id="@+id/linearLayout">
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/dwarf1"
-            android:id="@+id/imageButton1"
-            android:onClick="onCellClick"
+        android:id="@+id/heads" />
+</RelativeLayout>
+</HorizontalScrollView>
 
-            style="@android:style/Widget.DeviceDefault.ImageButton" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/dwarf2"
-            android:id="@+id/imageButton2"
-            android:onClick="onCellClick"
-            />
-        <ImageButton
+    <Button
+        android:text="Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/dwarf3"
-        android:id="@+id/imageButton3"
-        android:onClick="onCellClick"
-
-        />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/dwarf4"
-            android:id="@+id/imageButton4"
-            android:onClick="onCellClick"
-            />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/dwarf5"
-            android:id="@+id/imageButton5"
-            android:onClick="onCellClick"
-
-            />
-
-
-
-
-
-    </LinearLayout>
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
-        android:id="@+id/choice" />
-
+        android:id="@+id/scroll_right"
+        android:onClick="scroll_right" />
 </RelativeLayout>

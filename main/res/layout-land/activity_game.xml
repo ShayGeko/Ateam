@@ -251,4 +251,31 @@
         android:id="@+id/imageView12"
         android:visibility="invisible"/>
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/much_money"
+        android:id="@+id/money1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/much_money"
+        android:id="@+id/money2"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/money1"
+        android:layout_toStartOf="@+id/money1" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/much_money"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/money3" />
+
 </RelativeLayout>
