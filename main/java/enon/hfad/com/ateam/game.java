@@ -132,7 +132,7 @@ public class game extends AppCompatActivity {
 
         ImageView plane = (ImageView)findViewById(R.id.plane);
         if((level + 1)* 250 < first_stage_time )
-        level++;
+            level++;
         dropped_dwarfs = 0;
         //dwarf1.setVisibility(View.INVISIBLE);
         //dwarf2.setVisibility(View.INVISIBLE);
@@ -243,7 +243,7 @@ public class game extends AppCompatActivity {
                 R.drawable.plane2);
         final BitmapDrawable frame3 = (BitmapDrawable) getResources().
                 getDrawable(
-                R.drawable.plane3);
+                        R.drawable.plane3);
         final BitmapDrawable frame4 = (BitmapDrawable) getResources().getDrawable(
                 R.drawable.plane4);
 
@@ -362,7 +362,6 @@ public class game extends AppCompatActivity {
         final ImageView field10 = (ImageView)findViewById(R.id.imageView10);
         final ImageView field11 = (ImageView)findViewById(R.id.imageView11);
         final ImageView field12 = (ImageView)findViewById(R.id.imageView12);
-
         field1.setVisibility(View.VISIBLE);
         field2.setVisibility(View.VISIBLE);
         field3.setVisibility(View.VISIBLE);
@@ -376,7 +375,6 @@ public class game extends AppCompatActivity {
         field10.setVisibility(View.VISIBLE);
         field11.setVisibility(View.VISIBLE);
         field12.setVisibility(View.VISIBLE);
-
         field1.setImageResource(R.drawable.grass);
         field2.setImageResource(R.drawable.grass);
         field3.setImageResource(R.drawable.grass);
@@ -385,12 +383,9 @@ public class game extends AppCompatActivity {
         field6.setImageResource(R.drawable.grass);
         field7.setImageResource(R.drawable.grass);
         field8.setImageResource(R.drawable.grass);
-
         //field1.getLayoutParams().height -= 90;
         field1.getLayoutParams().width = field/12;
         //field1.getLayoutParams().height = high;
-
-
         field2.getLayoutParams().width = field/12;
         field3.getLayoutParams().width = field/12;
         field4.getLayoutParams().width = field/12;
@@ -451,71 +446,71 @@ public class game extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void run() {
-                    if (game_was_started && !game_was_paused) {
-                        final ImageView plane = (ImageView) findViewById(R.id.plane);
-                        //game_layout.setBackgroundColor(Color.rgb(red, green, blue));
-                        //red += (239 - 160) * step / 5000;
-                        //green -= (219 - 0) * step / 5000;
-                        //blue -= (239 - 0) * step / 5000;
-                        //current_x = speed_x * m_seconds;
-                        //current_y = speed_y * m_seconds;
-                        //m_seconds += step;
-                        current_time += step;
-                        int current[] = new int[2];
-                        plane.getLocationInWindow(current);
-                        //TODO  !
-                        //if (current[1] >= field/4 ){//|| dropped_dwarfs == 5) {
-                        //    game_was_played = true;
-                        //    game_layout.setBackgroundColor(Color.rgb(10, 0, 0));
-                        //    plane.setVisibility(View.INVISIBLE);
+                if (game_was_started && !game_was_paused) {
+                    final ImageView plane = (ImageView) findViewById(R.id.plane);
+                    //game_layout.setBackgroundColor(Color.rgb(red, green, blue));
+                    //red += (239 - 160) * step / 5000;
+                    //green -= (219 - 0) * step / 5000;
+                    //blue -= (239 - 0) * step / 5000;
+                    //current_x = speed_x * m_seconds;
+                    //current_y = speed_y * m_seconds;
+                    //m_seconds += step;
+                    current_time += step;
+                    int current[] = new int[2];
+                    plane.getLocationInWindow(current);
+                    //TODO  !
+                    //if (current[1] >= field/4 ){//|| dropped_dwarfs == 5) {
+                    //    game_was_played = true;
+                    //    game_layout.setBackgroundColor(Color.rgb(10, 0, 0));
+                    //    plane.setVisibility(View.INVISIBLE);
 
-                        //Toast toast = Toast.makeText(getApplicationContext(),
-                        //        "Game over", Toast.LENGTH_SHORT);
-                        //toast.show();
-                        //}
-                        ;
-                    } else {
-                        if(first_clicked){
-                            final TextView timer = (TextView) findViewById(R.id.timer);
-                            timer.setVisibility(View.VISIBLE);
-                                if(first_time == 1000) {
-                                    timer.setText("2");
-                                }
-                            if(first_time == 2000) {
-                                timer.setText("1");
-                            }
-                            if(first_time == 3000) {
-                                    timer.setVisibility(View.INVISIBLE);
-                                ImageButton pause_button = (ImageButton) findViewById(R.id.pause_button);
-                                pause_button.setVisibility(View.VISIBLE);
-                                    final ImageView plane = (ImageView) findViewById(R.id.plane);
-                                    game_was_started = true;
+                    //Toast toast = Toast.makeText(getApplicationContext(),
+                    //        "Game over", Toast.LENGTH_SHORT);
+                    //toast.show();
+                    //}
+                    ;
+                } else {
+                    if(first_clicked){
+                        final TextView timer = (TextView) findViewById(R.id.timer);
+                        timer.setVisibility(View.VISIBLE);
+                        if(first_time == 1000) {
+                            timer.setText("2");
+                        }
+                        if(first_time == 2000) {
+                            timer.setText("1");
+                        }
+                        if(first_time == 3000) {
+                            timer.setVisibility(View.INVISIBLE);
+                            ImageButton pause_button = (ImageButton) findViewById(R.id.pause_button);
+                            pause_button.setVisibility(View.VISIBLE);
+                            final ImageView plane = (ImageView) findViewById(R.id.plane);
+                            game_was_started = true;
 
-                                    //plane.setImageResource(R.drawable.battery1);
-                                    plane.setVisibility(View.VISIBLE);
-                                    plane.animate().xBy(width - 50).yBy(height / 4).setDuration(first_stage_time-((level-1)*100));
-                                    mAnimationDrawable = new AnimationDrawable();
+                            //plane.setImageResource(R.drawable.battery1);
+                            plane.setVisibility(View.VISIBLE);
+                            plane.animate().xBy(width - 50).yBy(height / 4).setDuration(first_stage_time-((level-1)*100));
+                            mAnimationDrawable = new AnimationDrawable();
 
-                                    mAnimationDrawable.setOneShot(false);
-                                    mAnimationDrawable.addFrame(frame1, DURATION);
-                                    mAnimationDrawable.addFrame(frame2, DURATION);
-                                    mAnimationDrawable.addFrame(frame3, DURATION);
-                                    mAnimationDrawable.addFrame(frame4, DURATION);
+                            mAnimationDrawable.setOneShot(false);
+                            mAnimationDrawable.addFrame(frame1, DURATION);
+                            mAnimationDrawable.addFrame(frame2, DURATION);
+                            mAnimationDrawable.addFrame(frame3, DURATION);
+                            mAnimationDrawable.addFrame(frame4, DURATION);
 
-                                    plane.setBackground(mAnimationDrawable);
+                            plane.setBackground(mAnimationDrawable);
 
-                                    mAnimationDrawable.setVisible(true, true);
-                                    mAnimationDrawable.start();
+                            mAnimationDrawable.setVisible(true, true);
+                            mAnimationDrawable.start();
                             if(game_was_paused){
-                            pause_time += step;
+                                pause_time += step;
 
-                        }}
-                            first_time += step;}
+                            }}
+                        first_time += step;}
 
-                    }
-                    //System.out.println("handler " + current_x);
-                    handler1.postDelayed(this, step);
                 }
+                //System.out.println("handler " + current_x);
+                handler1.postDelayed(this, step);
+            }
         });
         coin_location = new int[2];
 
@@ -524,7 +519,7 @@ public class game extends AppCompatActivity {
         final Handler collecting = new Handler();
         final Handler spiking = new Handler();
         game_layout.setOnClickListener(new View.OnClickListener() {
-                                        TextView timer = (TextView) findViewById(R.id.timer);
+                                           TextView timer = (TextView) findViewById(R.id.timer);
                                            final ImageView plane = (ImageView) findViewById(R.id.plane);
 
                                            //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -553,7 +548,7 @@ public class game extends AppCompatActivity {
                                                                        coin[j].getLocationInWindow(coin_location);
                                                                        //System.out.println("coin"+ j + " " + coin_location[0] + " " + coin_location[1]);
                                                                        if((dwarf_location[0] - coin_location[0] <= 50 && dwarf_location[0] - coin_location[0]>= -50) &&(dwarf_location[1] - coin_location[1] <= 50 && dwarf_location[1] - coin_location[1]>= -50)){
-                                                                          // System.out.println("coin" + j + " caught");
+                                                                           // System.out.println("coin" + j + " caught");
                                                                            xCoin = r.nextFloat() * field;
                                                                            yCoin =r.nextFloat() * (float)0.7 * high;
                                                                            if(yCoin  + xCoin * (float)0.4 <= (float)0.7*high)yCoin+=xCoin * (float)0.4;
@@ -567,9 +562,11 @@ public class game extends AppCompatActivity {
                                                                        int spike_location[] = new int[2];
                                                                        spike[j].getLocationInWindow(spike_location);
                                                                        if((dwarf_location[0] - spike_location[0] <= 50 && dwarf_location[0] - spike_location[0]>= -50) &&(dwarf_location[1] - spike_location[1] <= 50 && dwarf_location[1] - spike_location[1]>= -50)){
-                                                                          kill(i);
+                                                                           kill(i);
                                                                            dwarfs_alive--;
+                                                                           dwarf_killed[i] = true;
                                                                            spawn_lives(dwarfs_alive);
+                                                                           break;
                                                                        }
                                                                    }
                                                                    dwarf_location = null;
@@ -581,8 +578,9 @@ public class game extends AppCompatActivity {
                                                        ImageButton pause_button = (ImageButton) findViewById(R.id.pause_button);
                                                        timer.setVisibility(View.VISIBLE);
                                                        game_layout.setBackgroundResource(R.drawable.background_game2);
-                                                   } else {
-                                                       if ((current_time >= wait_time) && !game_was_paused ) {
+                                                   }
+                                                   else {
+                                                       if ((current_time >= wait_time) && !game_was_paused && dropped_dwarfs < dwarfs_awailable ) {
                                                            first_clicked = false;
                                                            final TranslateAnimation dwarf_vertical = new TranslateAnimation(location[0],(float) (location[0]), location[1], (int) (height * 0.7));
 
@@ -592,49 +590,22 @@ public class game extends AppCompatActivity {
 
                                                            dwarf[dropped_dwarfs].setVisibility(View.VISIBLE);
                                                            AnimatorSet dropDwarf = new AnimatorSet();
-                                                            dropDwarf.playSequentially(
-                                                                    ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.X, (float)(location[0])).setDuration(0),
-                                                                    ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.Y, (float)(location[1])).setDuration(0),
-                                                                    ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.Y, (float)(high * 0.7)).setDuration(Math.round(time))
+                                                           dropDwarf.playSequentially(
+                                                                   ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.X, (float)(location[0])).setDuration(0),
+                                                                   ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.Y, (float)(location[1])).setDuration(0),
+                                                                   ObjectAnimator.ofFloat(dwarf[dropped_dwarfs],View.Y, (float)(high * 0.7)).setDuration(Math.round(time))
 
-                                                            );
+                                                           );
                                                            dropDwarf.start();
-                                                           //dwarf[dropped_dwarfs].animate().x(location[0]).y(location[1]).setDuration(0).withEndAction(dropDwarf);
-                                                          // dwarf[dropped_dwarfs].animate().y((float)(high * 0.7)).setDuration(dwarf_vertical.getDuration());
-
-
-                                                           if (dropped_dwarfs == dwarfs_awailable - 1) {
+                                                           if (dropped_dwarfs >= dwarfs_awailable - 1 && dwarfs_awailable > 0) {
                                                                money += 5;
                                                                plane.animate().x(0).y(0).setDuration(0);
                                                                ImageButton next_level_button = (ImageButton)findViewById(R.id.level_button);
                                                                next_level_button.setVisibility(View.VISIBLE);
                                                                plane.setVisibility(View.INVISIBLE);
-                                                               dropped_dwarfs = 0;
-                                                               //m_seconds = 0;
                                                            }
                                                            dropped_dwarfs++;
-
                                                            current_time = 0;
-
-                                                           //TODO продолжение игры (проблема с повторной анимацией самолета)
-
-
-
-                                                           //for (byte i = 0; i < walls.length; i++) { // изменение apartment_ocupants
-                                                           //    if (pos < walls[i] * field) {
-                                                           //        apartment_ocupants[i]++;
-                                                           //        break;
-                                                           //    }
-                                                           //    if (pos == walls[i] * field) {
-                                                           //        current_apartment = "Wall. You missed, man!";
-                                                           //        break;
-                                                           //    }
-                                                           //    if (pos > walls[walls.length - 1] * field) {
-                                                           //        apartment_ocupants[walls.length]++;
-                                                               //    break;
-                                                             //  }
-                                                           //}
-                                                           ;
 
                                                        }
                                                    }
@@ -648,8 +619,6 @@ public class game extends AppCompatActivity {
                                                        ImageButton next_level_button = (ImageButton)findViewById(R.id.level_button);
                                                        next_level_button.setVisibility(View.VISIBLE);
                                                        plane.setVisibility(View.INVISIBLE);
-                                                       dropped_dwarfs = 0;
-                                                       //m_seconds = 0;
                                                    }
                                                    else {
                                                        plane.setVisibility(View.INVISIBLE);
