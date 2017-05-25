@@ -7,12 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static enon.hfad.com.ateam.R.id.activity_main;
 import static enon.hfad.com.ateam.R.id.player_score;
-
 
 public class MainActivity extends AppCompatActivity {
     private TextView text_money;
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static int money = 0;
     public static int chosen = 1;
-
 
 
 
@@ -54,6 +54,29 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("olo", "Money == null" + e);
             }
         }
+        ImageView shop_image = (ImageView) findViewById(R.id.shop);
+        shop_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToShop(v);
+            }
+        });
+
+        RelativeLayout main =(RelativeLayout)findViewById(R.id.activity_main);
+        main.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                play(v);
+            }
+        });
+
+        ImageView tutorial_image = (ImageView) findViewById(R.id.tutorial);
+        tutorial_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSettings(v);
+            }
+        });
 
     }
 
@@ -74,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GET_PLAYER_SCORE, money);
         editor.apply();
         money = data.getIntExtra("money", 0);
-        chosen = data.getIntExtra("chosen", 1);
         if (my_activity.contains(GET_PLAYER_SCORE)) {
             // получаем число из сохранёнки
 
@@ -100,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     public void goToShop(View view) {
         Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
         goToShopIntent.putExtra("chosen", chosen);
@@ -116,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
-        money++;
         text_money.setText(Integer.toString(money));
-
+        money++;
     }
 }

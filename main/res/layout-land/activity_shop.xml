@@ -59,13 +59,13 @@
             android:onClick="onCellClick"
             />
         <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/dwarf3"
-        android:id="@+id/imageButton3"
-        android:onClick="onCellClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dwarf3"
+            android:id="@+id/imageButton3"
+            android:onClick="onCellClick"
 
-        />
+            />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,13 +88,14 @@
 
     </LinearLayout>
 
-    <TextView
-        android:text="TextView"
+    <Button
+        android:text="null coins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
-        android:id="@+id/choice" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/dead_button"
+        android:onClick="null_coins" />
 
 </RelativeLayout>
