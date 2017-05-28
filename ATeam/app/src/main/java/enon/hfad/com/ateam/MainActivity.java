@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static enon.hfad.com.ateam.R.id.activity_main;
 import static enon.hfad.com.ateam.R.id.player_score;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     // нужно для сохранения денег, забейте
 
     public static int money = 0;
-
+    public static int chosen = 1;
 
 
 
@@ -36,8 +39,44 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.drawable.background_main);
         // установка фона (красивая картинка из инета)
 
-        text_money = (TextView) findViewById(player_score);
+        text_money = (TextView) findViewById(R.id.player_score);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
 
+            money = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            if(text_money == null){
+                text_money = (TextView) findViewById(R.id.player_score);
+            }
+            try {
+                text_money.setText(Integer.toString(money));
+            } catch (Exception e){
+                Log.v("olo", "Money == null" + e);
+            }
+        }
+        ImageView shop_image = (ImageView) findViewById(R.id.shop);
+        shop_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToShop(v);
+            }
+        });
+
+        RelativeLayout main =(RelativeLayout)findViewById(R.id.activity_main);
+        main.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                play(v);
+            }
+        });
+
+        ImageView tutorial_image = (ImageView) findViewById(R.id.tutorial);
+        tutorial_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSettings(v);
+            }
+        });
 
     }
 
@@ -51,28 +90,43 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences.Editor editor = my_activity.edit();
+        editor.putInt(GET_PLAYER_SCORE, money);
+        editor.apply();
+        money = data.getIntExtra("money", 0);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
 
+            money = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            if(text_money == null){
+                text_money = (TextView) findViewById(R.id.player_score);
+            }
+            try {
+                text_money.setText(Integer.toString(money));
+            } catch (Exception e){
+                Log.v("olo", "Money == null" + e);
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
-       super.onResume();
+        super.onResume();
 
-      if (my_activity.contains(GET_PLAYER_SCORE)) {
-          // получаем число из сохранёнки
-          money = my_activity.getInt(GET_PLAYER_SCORE, 0);
-            // выводим
-          //text_money.setText(Integer.toString(money));
-      }
-  }
+
+    }
+
 
 
 
     public void goToShop(View view) {
-        //Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
-        //startActivity(goToShopIntent);
-        final Toast check_it_later = Toast.makeText(getApplicationContext(),
-                "Please check it later", Toast.LENGTH_SHORT);
-        check_it_later.show();
+        Intent goToShopIntent = new Intent(MainActivity.this, shop.class);
+        goToShopIntent.putExtra("chosen", chosen);
+        startActivityForResult(goToShopIntent, 2);
     }
     public void goToSettings(View view) {
         Intent goToSettingsIntent = new Intent(MainActivity.this, settings.class);
@@ -81,10 +135,11 @@ public class MainActivity extends AppCompatActivity {
     public void play(View view) {
         Intent play_intent = new Intent(this, game.class);
         play_intent.putExtra("money", Integer.toString(money));
-        startActivity(play_intent);
+        play_intent.putExtra("chosen", chosen);
+        startActivityForResult(play_intent, 1);
     }
     public void money_plus(View view) {
         text_money.setText(Integer.toString(money));
-        money++;
+        //money++;
     }
 }
