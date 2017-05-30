@@ -220,4 +220,24 @@
         android:id="@+id/imageView12"
         android:visibility="invisible"/>
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentScore_textView"
+        android:layout_alignBottom="@+id/pause_button"
+        android:layout_alignRight="@+id/highScore_textView"
+        android:layout_alignEnd="@+id/highScore_textView" />
+
+    <TextView
+        android:text="i hate relative layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/highScore_textView"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/pause_button"
+        android:layout_toStartOf="@+id/pause_button"
+        android:layout_marginRight="44dp"
+        android:layout_marginEnd="44dp" />
+
 </RelativeLayout>

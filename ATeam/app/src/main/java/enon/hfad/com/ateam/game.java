@@ -3,7 +3,9 @@ package enon.hfad.com.ateam;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
@@ -29,6 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,9 +49,16 @@ import static enon.hfad.com.ateam.R.drawable.small_coin;
 
 
 public class game extends AppCompatActivity {
+    public static final String GAME_ACTIVITY = "game";
+    public static final String GET_PLAYER_SCORE = "player_score";
+    private SharedPreferences my_activity;
+
+    boolean lvl_up = false;
+    int highScore = 0, currentScore = 0;
     boolean gameOver = false;
     int coins = 3;
     int dwarfs_awailable = 5;
+    int dwarfs_to_drop = dwarfs_awailable;
     boolean dwarf_killed[] = new boolean[dwarfs_awailable];
     int coin_location[];
     boolean coin_animated[] = new boolean[coins];
@@ -60,6 +71,14 @@ public class game extends AppCompatActivity {
     final ImageView[] coin = new ImageView[3];
     final ImageView[] spike = new ImageView[dwarfs_awailable];
     final ImageView[] lives = new ImageView[dwarfs_awailable];
+
+    public void score_check(TextView highScore_text){
+        if(currentScore > highScore){
+            highScore = currentScore;
+            highScore_text.setText("HIGH SCORE :   " + Integer.toString(highScore));
+        }
+    }
+
     public void spawn_coin(int field, int high, int i, boolean animation){
         xCoin = r.nextFloat() * field;
         yCoin =r.nextFloat() * (float)0.7 * high;
@@ -79,6 +98,8 @@ public class game extends AppCompatActivity {
         }
         else coin_animated[i] = false;
     }
+
+
     public void spawn_lives(int live){
         for(int i = 0; i < dwarfs_awailable; i++){
             lives[i].setVisibility(View.GONE);
@@ -88,11 +109,14 @@ public class game extends AppCompatActivity {
             lives[i].animate().x(20 + i*40).y(20).setDuration(0);
         }
     }
+
+
     public void spawn_spike(int field, int high, int i){
         high+=(field  + high) / 27;
         xSpike = r.nextFloat() * field;
         spike[i].animate().x(xSpike).y((float)(0.7 * (float)high)).setDuration(0);
     }
+
     public void pause_clicked(View view) {
         ImageView plane = (ImageView)findViewById(R.id.plane);
         game_was_paused = true;
@@ -144,10 +168,12 @@ public class game extends AppCompatActivity {
         final int height = display.getHeight();
         plane.setVisibility(View.VISIBLE);
         for(int i = 0; i < dwarfs_awailable; i++)dwarf[i].setVisibility(View.INVISIBLE);
-       // for(int i = 0; i < 5; i++)spawn_spike(field, high, i);
+        for(int i = 0; i < 5; i++)dwarf[i].animate().x(0).y(0).setDuration(0);
+        for(int i = 0; i < 5; i++)spawn_spike(field, high, i);
         plane.animate().xBy(width - 50).yBy(height / 4).setDuration(first_stage_time - ((level-1)*250));
         ImageButton next_level_button = (ImageButton)findViewById(R.id.level_button);
         next_level_button.setVisibility(View.INVISIBLE);
+        dwarfs_to_drop = dwarfs_alive;
         Log.v("olo",Integer.toString(dropped_dwarfs));
 
     }
@@ -209,6 +235,8 @@ public class game extends AppCompatActivity {
         final BitmapDrawable frame4 = (BitmapDrawable) getResources().getDrawable(
                 R.drawable.plane4);
 
+        currentScore = 0;
+
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_game);
@@ -226,16 +254,31 @@ public class game extends AppCompatActivity {
 
         field = width;
         high = height / 10 * 9;
-        //speed = Math.round(field / 5);
+
 
         Intent getData = getIntent();
         chosen = getData.getIntExtra("chosen", 1);
         View v = new ImageView(getBaseContext());
+        final TextView highScore_text = (TextView) findViewById(R.id.highScore_textView);
+        final TextView currentScore_text = (TextView) findViewById(R.id.currentScore_textView);
+        my_activity = getSharedPreferences(GAME_ACTIVITY, Context.MODE_PRIVATE);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
 
+            highScore = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            try {
+                highScore_text.setText("HIGH SCORE :   " + Integer.toString(highScore));
+            } catch (Exception e){
+                Log.v("olo", "high score == null" + e);
+            }
+        }
 
+        currentScore_text.setText("     SCORE :   " + Integer.toString(currentScore));
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((width + height) / 27, (width + height) / 27);
         RelativeLayout.LayoutParams small_params = new RelativeLayout.LayoutParams((width + height) / 50, (width + height) / 50);
+
         switch (chosen) {
             case 1:
                 for(int i = 0; i < dwarfs_awailable; i++) {
@@ -383,22 +426,22 @@ public class game extends AppCompatActivity {
         });
         coin_location = new int[2];
 
-        final AnimatorSet coinCaught = new AnimatorSet();
 
         final Handler collecting = new Handler();
-        final Handler spiking = new Handler();
         game_layout.setOnClickListener(new View.OnClickListener() {
                                            TextView timer = (TextView) findViewById(R.id.timer);
                                            final ImageView plane = (ImageView) findViewById(R.id.plane);
-
+                                            int iteration  = 1;
                                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                                            @Override
                                            public void onClick(View v) {
 
                                                int location[] = new int[2];
-                                               int money_location[] = new int[2];
                                                plane.getLocationInWindow(location);
-                                               while(dropped_dwarfs < dwarfs_awailable && dwarf_killed[dropped_dwarfs])dropped_dwarfs++;
+
+                                               while(dropped_dwarfs < dwarfs_awailable && dwarf_killed[dropped_dwarfs])
+                                                   dropped_dwarfs++;
+
                                                if ((dropped_dwarfs < dwarfs_awailable)) {
 
                                                    if (!game_was_started ) {
@@ -471,24 +514,40 @@ public class game extends AppCompatActivity {
                                                                                ImageButton next_level_button = (ImageButton) findViewById(R.id.level_button);
                                                                                next_level_button.setVisibility(View.GONE);
                                                                                plane.setVisibility(View.GONE);
+                                                                               return;
                                                                            }
                                                                            break;
                                                                        }
                                                                    }
-                                                                   if(dwarf_location[1] >= (float)(high * 0.65) || dwarf_killed[current_dwarf]){System.out.println("Handler terminated");return;}
+                                                                   if(dwarf_location[1] >= (float)(high * 0.65) || dwarf_killed[current_dwarf]){
+                                                                       System.out.println("Handler terminated. " + (dwarfs_awailable - current_dwarf - 1) + " dwarfs left");
+                                                                       if(!dwarf_killed[current_dwarf]){
+                                                                           currentScore++;
+                                                                           currentScore_text.setText("     SCORE :   " + Integer.toString(currentScore));
+                                                                           score_check(highScore_text); // if current score is bigger than high score, than change high score
+                                                                       }
+                                                                       return;
+                                                                   }
                                                                    dwarf_location = null;
 
                                                                    collecting.postDelayed(this,100);
                                                                }
                                                            });
-                                                           if (dropped_dwarfs >= dwarfs_awailable - 1 && !gameOver) {
+                                                           System.out.println("dwarfs awailable : " + dwarfs_to_drop);
+                                                           if ((iteration == dwarfs_to_drop)&& !gameOver) {
+                                                               System.out.println("iteration: " + iteration);
+                                                               iteration = 0;
                                                                money += 5;
                                                                plane.animate().x(0).y(0).setDuration(0);
                                                                ImageButton next_level_button = (ImageButton)findViewById(R.id.level_button);
                                                                next_level_button.setVisibility(View.VISIBLE);
                                                                plane.setVisibility(View.INVISIBLE);
+
+                                                               System.out.println("dwarfs alive: " +  dwarfs_alive);
+                                                               dwarfs_to_drop = dwarfs_alive;
                                                            }
                                                            dropped_dwarfs++;
+                                                           iteration++;
                                                            current_time = 0;
 
                                                        }
@@ -498,14 +557,12 @@ public class game extends AppCompatActivity {
                                                    boolean alive = false;
                                                    for(int i = 0; i < dwarfs_awailable; i++)if(!dwarf_killed[i])alive = true;
                                                    if(alive && !gameOver) {
-                                                       money += 5;
+                                                      money += 5;
                                                        plane.animate().x(0).y(0).setDuration(0);
                                                        ImageButton next_level_button = (ImageButton) findViewById(R.id.level_button);
                                                        next_level_button.setVisibility(View.VISIBLE);
                                                        plane.setVisibility(View.INVISIBLE);
-                                                   }
-                                                   else {
-
+                                                       lvl_up = true;
                                                    }
                                                }
 
@@ -513,6 +570,43 @@ public class game extends AppCompatActivity {
                                            }
                                        }
         );
+
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // запоминаем данные
+        SharedPreferences.Editor editor = my_activity.edit();
+        editor.putInt(GET_PLAYER_SCORE, highScore);
+        editor.apply();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences.Editor editor = my_activity.edit();
+        editor.putInt(GET_PLAYER_SCORE, highScore);
+        editor.apply();
+        highScore = data.getIntExtra("money", 0);
+        if (my_activity.contains(GET_PLAYER_SCORE)) {
+            // получаем число из сохранёнки
+
+            highScore = my_activity.getInt(GET_PLAYER_SCORE, 0);
+            // выводим
+            /*if(text_money == null){
+                text_money = (TextView) findViewById(R.id.player_score);
+            }
+            try {
+                text_money.setText(Integer.toString(money));
+            } catch (Exception e){
+                Log.v("olo", "Money == null" + e);
+            }*/
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
 
     }
